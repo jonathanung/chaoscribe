@@ -49,25 +49,25 @@ Base.metadata.create_all(engine)
 
 session = Session()
 
-with open("dump.json", 'r') as fp:
-    for article in json.load(fp):
-        newsList = article["news"]
-        level: int = article["level"]["level"]
-        for lang in newsList.keys():
-            for news in newsList[lang]:
-                a = Article(id=str(uuid.uuid4()),
-                            language=lang, 
-                            level=level,
-                            author=news["author"],
-                            source=news["source"]["name"],
-                            title=news["title"],
-                            description=news["description"],
-                            url=news["url"],
-                            imageUrl=news["urlToImage"],
-                            date=news["publishedAt"],
-                            content=news["content"])
-                session.add(a)
-                session.commit()
+# with open("dump.json", 'r') as fp:
+#     for article in json.load(fp):
+#         newsList = article["news"]
+#         level: int = article["level"]["level"]
+#         for lang in newsList.keys():
+#             for news in newsList[lang]:
+#                 a = Article(id=str(uuid.uuid4()),
+#                             language=lang, 
+#                             level=level,
+#                             author=news["author"],
+#                             source=news["source"]["name"],
+#                             title=news["title"],
+#                             description=news["description"],
+#                             url=news["url"],
+#                             imageUrl=news["urlToImage"],
+#                             date=news["publishedAt"],
+#                             content=news["content"])
+#                 session.add(a)
+#                 session.commit()
             
 
 

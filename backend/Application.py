@@ -10,21 +10,21 @@ class Application:
     def LoadCache(self):
         for article in self.DBSession.query(DB.Article).all():
             if (not(article.level in self.ArticleCache.keys())):
-                self.ArticleCache[article.level] = []
+                self.ArticleCache[article.level] = {"en": {}, "fr": {}, "es": {}}
 
-            self.ArticleCache[article.level].append(article)
+            self.ArticleCache[article.level][article.language][article.id] = article.ToDict()
 
     def GetArticles(self, level: int = 3, language: str = "en", new: bool = True):
-        articles: list[dict] = []
+        articles: list[dict] = [] 
+        
+        try:
+            return self.ArticleCache[level][language]     
 
-        for x in range(level + 1):
-            l = self.ArticleCache[x]
-            for article in l:
-                articles.append(article.ToDict())
+        except KeyError:
+            raise Exception("No articles found")
+            return []
 
-        return articles
-            
     
-# app = Application()
-# app.LoadCache()
-# print(len(app.GetArticles(3)))
+app = Application()
+app.LoadCache()
+print(len(app.GetArticles(5)))

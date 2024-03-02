@@ -48,6 +48,9 @@ class Application:
         self.UserCache[user.id] = { "user": user.ToDict(), "loggedIn": False }
         self.UsernameCache[user.username] = user.id
 
+        DB.session.add(user)
+        DB.session.commit()
+
         return user.ToDict()
     
     def Login(self, username: str, passwordHash: str) -> dict:
@@ -65,11 +68,10 @@ class Application:
         except KeyError:
             raise Exception(f"User {username} not found.")
     
-    def Logout(self, username: str) -> bool:
+    def Logout(self, userId: str) -> bool:
         user: dict = None
 
         try:
-            userId = self.UsernameCache[username]
             self.UserCache[userId]["loggedIn"] = False
 
             return True

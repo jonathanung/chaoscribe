@@ -26,3 +26,4 @@ npm i
 npm run dev
 ```
 
+The website will boot on `http://localhost:3000/`.

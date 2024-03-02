@@ -27,10 +27,11 @@ class Application:
 
     def GetArticles(self, level: int = 3, language: str = "en", new: bool = True):
         articles: list[dict] = [] 
-        
+
         try:
             for x in range(level + 1):
-                articles += self.ArticleCache[x][language]
+                for key in self.ArticleCache[x][language].keys():
+                    articles.append(self.ArticleCache[x][language][key])
             
             return articles
 

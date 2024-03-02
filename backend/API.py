@@ -19,6 +19,13 @@ class LikeModel(BaseModel):
     articleid: str
     userid: str
 
+class CommentModel(BaseModel):
+    articleid: str
+    userid: str
+    content: str
+
+class CommentIdModel(BaseModel):
+    commentid: str
 
 @app.get("/{level}/{language}")
 async def GetArticles(level, language): 
@@ -72,9 +79,26 @@ async def Like(like: LikeModel):
         raise HTTPException(status_code=500, detail=e.args[0])
 
 @app.post("/unlike")
-async def Like(like: LikeModel):
+async def Unlike(like: LikeModel):
     try:
         return Service.Unlike(like.articleid, like.userid)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.args[0])
+
+
+@app.post("/comment")
+async def Comment(comment: CommentModel):
+    try:
+        return Service.CreateComment(comment.articleid, comment.userid, comment.content)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.args[0])
+
+@app.post("/uncomment")
+async def Unlike(commendId: CommentIdModel):
+    try:
+        return Service.DeleteComment(commendId.commentid)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.args[0])

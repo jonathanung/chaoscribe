@@ -120,7 +120,27 @@ class Application:
         else:
             raise Exception(f"Like doesnt exist {articleId}")
 
+    def CreateComment(self, articleId: str, userId: str, content: str):
+        if (not(articleId in self.articleIdCache.keys())):
+            raise Exception(f"Article with id {articleId} not found.")
+        
+        user = self.GetUser(userId)
+        if (len(DB.session.query(DB.Comment).filter(DB.Comment.articleId == articleId, DB.Comment.userId == userId).all()) < 1):
+            comment = DB.Comment(id=newUUID(), articleId=articleId, userId=userId, content=content)
+            DB.session.add(comment)
+            DB.session.commit()
 
+            return comment
+
+        raise Exception(f"Can't add duplicate likes to {articleId}")
+
+    def DeleteComment(self, commentId: str):
+        if (len(DB.session.query(DB.Comment).filter(DB.Comment.id == commentId).all()) >= 1):
+            DB.session.query(DB.Comment).filter(DB.Comment.id == commentId).delete()
+            DB.session.commit()
+            return True
+
+        raise Exception(f"Comment with id {commentId} doesn't exist")
     
 # app = Application()
 

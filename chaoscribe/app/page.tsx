@@ -47,6 +47,7 @@ export default function Home() {
     const [copySuccess, setCopySuccess] = useState<string | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [currentComment, setCurrentComment] = useState<string>("");
+    const [search, setSearch] = useState<string>("");
 
     async function copyToClip(id: string) {
         // if (isLoggedIn) {
@@ -118,6 +119,10 @@ export default function Home() {
         setCurrentComment(String(event.target.value));
     }
 
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(String(event.target.value));
+    }
+
     useEffect(() => {
         axios.get('http://localhost:8000/api/article')
             .then((response) => {
@@ -135,7 +140,9 @@ export default function Home() {
             <Navbar showFullNav={true} isLoggedIn={isLoggedIn} chaosLevel={chaosLevel} setChaosLevel={setChaosLevel} chaosMode={chaosMode} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 {articles.map((article: Article, i: number) => {
-                    if (article.chaosLevel <= chaosLevel) {
+                    if (article.chaosLevel <= chaosLevel && (article.title.toLowerCase().includes(search.toLowerCase()) || 
+                        article.author.toLowerCase().includes(search.toLowerCase()) || article.description.toLowerCase().includes(search.toLowerCase()) || 
+                        article.content.toLowerCase().includes(search.toLowerCase()) || Number(article.chaosLevel.toString()) === Number(search))) {
                         return (
                             <div key={i} className="flex flex-col justify-between w-7/12 h-96 p-4 mb-4 bg-slate-950 border rounded-lg shadow-md dark:border-gray-700 my-7">
                                 <div className={`article-container ${i % 2 == 0 ? 'article-left' : 'article-right '}`}>
@@ -195,7 +202,9 @@ export default function Home() {
                     }
                 })}
             </div>
-            <div style={bannerStyle}></div>
+            <div style={bannerStyle}>
+                <input className='align-self-right ml-10 mt-3 p-1 text-black' placeholder='search for an article' value={search} onChange={handleSearchChange}/>
+            </div>
             {showLoginModal && <LoginModal setShowLoginModal={setShowLoginModal} />}
         </main>
     );

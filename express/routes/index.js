@@ -61,7 +61,7 @@ router.get('/', function(req, res, next) {
     {
         id: "5",
         userId: "user2",
-        text: "Keep it up!",
+        text: "long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment ",
       time: "2024-03-03T10:20:00Z",
         likes: []
     }]
@@ -132,7 +132,7 @@ router.get('/', function(req, res, next) {
     "urlToImage": "https://via.placeholder.com/150",
     "publishedAt": "2024-03-02T14:20:00Z",
     "content": "Fusce feugiat libero et ligula fermentum, eget malesuada ligula volutpat. Ut vitae lorem nec velit sodales efficitur. Donec auctor nisl eget dui gravida, vel faucibus lectus consectetur.",
-    "chaosLevel": 5 ,
+    "chaosLevel": 6 ,
     "likes": [],
     "comments": []
   }]), 200);
@@ -185,7 +185,7 @@ router.get('/:id', function (req, res, next) {
     {
         id: "5",
         userId: "user2",
-        text: "Keep it up!",
+        text: "long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment long ah comment ",
       time: "2024-03-03T10:20:00Z",
         likes: []
     }]
@@ -264,7 +264,7 @@ router.get('/:id', function (req, res, next) {
       "urlToImage": "https://via.placeholder.com/150",
       "publishedAt": "2024-03-02T14:20:00Z",
       "content": "Fusce feugiat libero et ligula fermentum, eget malesuada ligula volutpat. Ut vitae lorem nec velit sodales efficitur. Donec auctor nisl eget dui gravida, vel faucibus lectus consectetur.",
-      "chaosLevel": 5,
+      "chaosLevel": 6,
       "likes": [],
       "comments": []
     }, 200);

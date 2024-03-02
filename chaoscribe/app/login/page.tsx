@@ -28,7 +28,7 @@ export default function Login() {
 
     return (
         <main>
-            <Navbar showFullNav={false} isLoggedIn={false} chaosLevel={0} setChaosLevel={()=>{}} />
+            <Navbar showFullNav={false} isLoggedIn={false} chaosLevel={0} setChaosLevel={()=>{}} chaosMode={false} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 <h4>Login</h4>
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

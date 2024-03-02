@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLevel }: { showFullNav: boolean; isLoggedIn: boolean; chaosLevel: number, setChaosLevel: (chaosLevel: number) => void}) {
+export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLevel, chaosMode }: { showFullNav: boolean; isLoggedIn: boolean; chaosLevel: number, setChaosLevel: (chaosLevel: number) => void; chaosMode: boolean }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
@@ -68,8 +68,10 @@ export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLe
                                 Login
                             </Link>
                         </div>
-                    )}
+                )}
+                {chaosMode && (
                     <div className="flex items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                        
                         <label htmlFor="default-range" className="block mb-2 font-medium text-gray-900 dark:text-white h-full">Chaos Level</label>
                         <div className="relative px-2 flex items-center h-full">
                             <input id="default-range" type="range" value={chaosLevel} onChange={handleSliderChange} onMouseEnter={showTooltip} onMouseLeave={hideTooltip} min="0" max="6" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
@@ -80,6 +82,7 @@ export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLe
                             )}
                         </div>
                     </div>
+                )}
                 </div>
                 )}
         </nav>

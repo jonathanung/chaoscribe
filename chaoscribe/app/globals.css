@@ -31,3 +31,24 @@ body {
     text-wrap: balance;
   }
 }
+
+.article-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.article-container img {
+    width: 200px;
+    height: auto;
+    margin: 0 1rem;
+}
+
+.article-left {
+    flex-direction: row;
+}
+
+.article-right {
+    flex-direction: row-reverse;
+}
+

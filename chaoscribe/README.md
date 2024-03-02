@@ -1,13 +1,12 @@
 News AI Generator, ChaosHacks2024
 
-Tools used in the creation of this project:
+Tools used in the creation of this project's frontend:
 GPT-4
 FlowBite
 
-Frameworks used in this project:
+Frameworks used in this project's frontend:
 Next.js
 Tailwind
-FastAPI
 
 ## Getting Started
 
@@ -17,4 +16,13 @@ Packages include:
 React.js
 Next.js
 axios
+
+After the node modules are downloaded, feel free to run the project using `npm run dev`.
+
+Alternatively, you could copy paste all of this into the terminal to get the front-end up and running.
+
+```
+npm i
+npm run dev
+```
 

@@ -4,32 +4,10 @@ import Navbar from "./components/navbar";
 import LoginModal from './components/loginModal';
 import axios from 'axios';
 import Link from 'next/link';
+import Article from './interfaces/article';
+import Comment from './interfaces/comment';
 
 export default function Home() {
-
-    interface Article {
-        id: string,
-        source: string
-        author: string;
-        title: string;
-        description: string;
-        url: string;
-        urlToImage: string;
-        publishedAt: string;
-        content: string;
-        //fields for rishit to add to API
-        chaosLevel: number;
-        likes: Array<string>
-        comments: Array<Comment>
-    };
-
-    interface Comment {
-        id: string,
-        userId: string,
-        text: string
-        time: string
-    }
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [chaosLevel, setChaosLevel] = useState(2);
     const [articles, setArticles] = useState([]);
@@ -40,15 +18,16 @@ export default function Home() {
     const [currentComment, setCurrentComment] = useState<string>("");
 
     async function copyToClip(id: string) {
-        if (isLoggedIn) {
-            await navigator.clipboard.writeText(location.href + `/${id}`);
+        // if (isLoggedIn) {
+            await navigator.clipboard.writeText(location.href + `/id/${id}`);
             setCopySuccess(id);
             setTimeout(() => {
                 setCopySuccess(null);
             }, 3000);
-        } else {
-            setShowLoginModal(true);
-        }
+        // } else {
+        //     setShowLoginModal(true);
+        // }
+        // rishit didn't like the anti-consumer twitter experience :(
     }
 
     const incrementLikes = (articleId: string) => {
@@ -109,7 +88,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/articles')
+        axios.get('http://localhost:8000/api/article')
             .then((response) => {
                 setArticles(response.data);
                 console.log(response.data)
@@ -132,7 +111,7 @@ export default function Home() {
                                         <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-900">{article.title}</h2>
                                         <h4 className="mt-2 text-sm text-gray-500 dark:text-gray-400">{article.author}</h4>
                                         <p className="mt-2 text-sm text-gray-700 dark:text-gray-700">{article.content}</p>
-                                        <Link href={`/${article.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">Read more</Link>
+                                        <Link href={`/id/${article.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">Read more</Link>
                                     </div>
                                     <img className="mt-4" src={article.urlToImage} />
                                 </div>

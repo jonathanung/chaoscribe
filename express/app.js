@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 
-app.use('/api/articles', indexRouter);
+app.use('/api/article', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

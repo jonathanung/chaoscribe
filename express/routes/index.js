@@ -34,31 +34,36 @@ router.get('/', function(req, res, next) {
         id: "1",
         userId: "user1",
         text: "This is comment 1",
-        time: "2024-03-03T10:00:00Z"
+        time: "2024-03-03T10:00:00Z",
+        likes: []
     },
     {
         id: "2",
         userId: "user2",
         text: "Great post!",
-        time: "2024-03-03T10:05:00Z"
+      time: "2024-03-03T10:05:00Z",
+        likes: []
     },
     {
         id: "3",
         userId: "user3",
         text: "Nice work",
-        time: "2024-03-03T10:10:00Z"
+      time: "2024-03-03T10:10:00Z",
+        likes: []
     },
     {
         id: "4",
         userId: "user1",
         text: "I agree with this",
-        time: "2024-03-03T10:15:00Z"
+      time: "2024-03-03T10:15:00Z",
+        likes: []
     },
     {
         id: "5",
         userId: "user2",
         text: "Keep it up!",
-        time: "2024-03-03T10:20:00Z"
+      time: "2024-03-03T10:20:00Z",
+        likes: []
     }]
   },
     {
@@ -153,31 +158,36 @@ router.get('/:id', function (req, res, next) {
         id: "1",
         userId: "user1",
         text: "This is comment 1",
-        time: "2024-03-03T10:00:00Z"
+        time: "2024-03-03T10:00:00Z",
+        likes: []
     },
     {
         id: "2",
         userId: "user2",
         text: "Great post!",
-        time: "2024-03-03T10:05:00Z"
+      time: "2024-03-03T10:05:00Z",
+        likes: []
     },
     {
         id: "3",
         userId: "user3",
         text: "Nice work",
-        time: "2024-03-03T10:10:00Z"
+      time: "2024-03-03T10:10:00Z",
+        likes: []
     },
     {
         id: "4",
         userId: "user1",
         text: "I agree with this",
-        time: "2024-03-03T10:15:00Z"
+      time: "2024-03-03T10:15:00Z",
+        likes: []
     },
     {
         id: "5",
         userId: "user2",
         text: "Keep it up!",
-        time: "2024-03-03T10:20:00Z"
+      time: "2024-03-03T10:20:00Z",
+        likes: []
     }]
     }, 200);
   } else if (req.params.id === "P3hT5gBdF6gU7rH8iJ") {

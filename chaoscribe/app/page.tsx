@@ -145,7 +145,7 @@ export default function Home() {
                                         <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{article.content}</p>
                                         <Link href={`/id/${article.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">Read more</Link>
                                     </div>
-                                    <img className="mt-4" src={article.urlToImage} />
+                                    <img className="mt-4 border rounded-lg" src={article.urlToImage} />
                                 </div>
                                 {copySuccess === article.id && (
                                     <div className="mt-2 text-sm text-green-500 items-center flex justify-center">

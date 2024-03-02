@@ -52,10 +52,3 @@ To set up the project locally, follow these steps:
 - **AI:**
   - [GPT-4](https://openai.com/gpt-4) - The latest generation of the Generative Pre-trained Transformer by OpenAI.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a pull request or open an issue if you have any suggestions or improvements.
-
-## License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

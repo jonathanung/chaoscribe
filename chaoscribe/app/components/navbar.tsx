@@ -22,18 +22,20 @@ export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLe
     };
     
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50">
+        <nav className="bg-white border-gray-200 dark:bg-slate-950 fixed top-0 left-0 right-0 z-50">
             {!showFullNav &&
                 (<div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-                    <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">chaoscribe</span>
-                    </Link>
+                <Link href="/" className="flex items-center">
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-orange-700">Chaos</span>
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">cribe</span>
+                </Link>
                 </div>
             )}
             {showFullNav &&
                 (<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">chaoscribe</span>
+                    <Link href="/" className="flex items-center">
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-orange-700">Chaos</span>
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">cribe</span>
                     </Link>
                     {isLoggedIn && (
                     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">

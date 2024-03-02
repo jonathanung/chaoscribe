@@ -9,6 +9,37 @@ import Article from '../../interfaces/article';
 import Comment from '../..//interfaces/comment';
 
 const ArticlePage = () => {
+    const styles : React.CSSProperties = {
+        backgroundImage: `url(\"../../chaoscribe-bg.png\")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        opacity: 0.05,
+        position: 'fixed', 
+        top: 0,            
+        left: 0,           
+        width: '100%',     
+        zIndex: -1         
+    };
+    const bannerStyle: React.CSSProperties = {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '60px',
+        backgroundImage: 'url("../../../banner.png")',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundColor: 'black',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 1000
+    };
+
     const pathname = usePathname();
     const id = pathname.split("/").pop();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,7 +55,7 @@ const ArticlePage = () => {
             const response = await axios.get(`http://localhost:8000/api/article/${id}`);
             setArticle(response.data);
             setComments(response.data.comments);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error('Invalid', error);
         }
@@ -107,15 +138,16 @@ const ArticlePage = () => {
 
     return (
         <main className="">
+            <div style={styles}></div>
             <Navbar showFullNav={true} isLoggedIn={isLoggedIn} chaosLevel={0} setChaosLevel={() => { }} chaosMode={false} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
             {article && (
-                <div className="flex flex-col justify-between w-7/12 h-full p-4 mb-4 bg-white border rounded-lg shadow-md dark:border-gray-700 my-7">
+                <div className="flex flex-col justify-between w-7/12 h-full p-4 mb-4 bg-slate-950 border rounded-lg shadow-md dark:border-gray-700 my-7">
                     <div className={`article-container`}>
                         <div className="">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-900">{article.title}</h2>
-                            <h4 className="mt-2 text-sm text-gray-500 dark:text-gray-400">{article.author}</h4>
-                            <p className="mt-2 text-sm text-gray-700 dark:text-gray-700">{article.content}</p>
+                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200">{article.title}</h2>
+                            <h4 className="mt-2 text-sm text-gray-500 dark:text-gray-500">{article.author}</h4>
+                            <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{article.content}</p>
                         </div>
                         <img className="mt-4" src={article.urlToImage} />
                     </div>
@@ -162,13 +194,17 @@ const ArticlePage = () => {
                                 </button>
                     </div>
                         )}
-                        <div className="flex flex-col justify-between w-full h-full p-4 mb-4 bg-white border rounded-lg shadow-md dark:border-gray-700 my-7">
+                        <div className="flex flex-col justify-between w-full h-full p-4 mb-4 bg-gray-900 border rounded-lg shadow-md dark:border-gray-700 my-7">
                         <h5>{article.comments.length} Comments</h5>
                         {comments.map((comment, i) => {
                             return (
-                                <div key={i} className="flex flex-col w-full h-full p-2 my-2 bg-white border rounded-lg shadow-md dark:border-gray-700 my-7">
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-700">{comment.userId}</p>
-                                    <p className="text-sm text-gray-600 dark:text-gray-550">{comment.text}</p>
+                                <div key={i}>
+                                    <div className="flex flex-col w-full h-full p-2 mb-1 bg-slate-800 border rounded-lg shadow-md dark:border-gray-700 my-7">
+                                        <p className="text-sm font-medium text-gray-200 dark:text-gray-200">{comment.userId}</p>
+                                        <p className="text-sm text-gray-400 dark:text-gray-550">{comment.text}</p>
+                                    </div>
+                                    <div>
+                                    </div>
                                 </div>
                             );
                         })}
@@ -176,6 +212,7 @@ const ArticlePage = () => {
                 </div>
                 )}
             </div>
+            <div style={bannerStyle}></div>
             {showLoginModal && <LoginModal setShowLoginModal={setShowLoginModal} />}
         </main>
     );

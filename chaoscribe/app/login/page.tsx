@@ -4,6 +4,36 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function Login() {
+    const styles : React.CSSProperties = {
+        backgroundImage: `url(\"./chaoscribe-bg.png\")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        opacity: 0.05,
+        position: 'fixed', 
+        top: 0,            
+        left: 0,           
+        width: '100%',     
+        zIndex: -1         
+    };
+    const bannerStyle: React.CSSProperties = {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '60px',
+        backgroundImage: 'url("../../../banner.png")',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundColor: 'black',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 1000
+    };
     const [user, setUser] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
 
@@ -28,10 +58,11 @@ export default function Login() {
 
     return (
         <main>
+            <div style={styles}></div>
             <Navbar showFullNav={false} isLoggedIn={false} chaosLevel={0} setChaosLevel={()=>{}} chaosMode={false} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 <h4>Login</h4>
-                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-slate-950">
                     <form className="space-y-6 border p-4 rounded-md" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email">Email:</label>
@@ -71,6 +102,7 @@ export default function Login() {
                 </div>
                 <h4>Don't have an account? <a href="/registration" className="text-blue-500">Register</a></h4>
             </div>
+            <div style={bannerStyle}></div>
         </main>
     );
 }

@@ -8,6 +8,37 @@ import Article from './interfaces/article';
 import Comment from './interfaces/comment';
 
 export default function Home() {
+    const styles : React.CSSProperties = {
+        backgroundImage: `url(\"../../../chaoscribe-bg.png\")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        opacity: 0.05,
+        position: 'fixed', 
+        top: 0,            
+        left: 0,           
+        width: '100%',     
+        zIndex: -1         
+    };
+    const bannerStyle: React.CSSProperties = {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '60px',
+        backgroundImage: 'url("../../../banner.png")',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundColor: 'black',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 1000
+    };
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [chaosLevel, setChaosLevel] = useState(2);
     const [articles, setArticles] = useState([]);
@@ -100,17 +131,18 @@ export default function Home() {
 
     return (
         <main className="">
+            <div style={styles}></div>
             <Navbar showFullNav={true} isLoggedIn={isLoggedIn} chaosLevel={chaosLevel} setChaosLevel={setChaosLevel} chaosMode={chaosMode} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 {articles.map((article: Article, i: number) => {
                     if (article.chaosLevel <= chaosLevel) {
                         return (
-                            <div key={i} className="flex flex-col justify-between w-7/12 h-96 p-4 mb-4 bg-white border rounded-lg shadow-md dark:border-gray-700 my-7">
+                            <div key={i} className="flex flex-col justify-between w-7/12 h-96 p-4 mb-4 bg-slate-950 border rounded-lg shadow-md dark:border-gray-700 my-7">
                                 <div className={`article-container ${i % 2 == 0 ? 'article-left' : 'article-right '}`}>
                                     <div className="">
-                                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-900">{article.title}</h2>
-                                        <h4 className="mt-2 text-sm text-gray-500 dark:text-gray-400">{article.author}</h4>
-                                        <p className="mt-2 text-sm text-gray-700 dark:text-gray-700">{article.content}</p>
+                                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-200">{article.title}</h2>
+                                        <h4 className="mt-2 text-sm text-gray-500 dark:text-gray-500">{article.author}</h4>
+                                        <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{article.content}</p>
                                         <Link href={`/id/${article.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">Read more</Link>
                                     </div>
                                     <img className="mt-4" src={article.urlToImage} />
@@ -163,6 +195,7 @@ export default function Home() {
                     }
                 })}
             </div>
+            <div style={bannerStyle}></div>
             {showLoginModal && <LoginModal setShowLoginModal={setShowLoginModal} />}
         </main>
     );

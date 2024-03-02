@@ -125,14 +125,12 @@ class Application:
             raise Exception(f"Article with id {articleId} not found.")
         
         user = self.GetUser(userId)
-        if (len(DB.session.query(DB.Comment).filter(DB.Comment.articleId == articleId, DB.Comment.userId == userId).all()) < 1):
-            comment = DB.Comment(id=newUUID(), articleId=articleId, userId=userId, content=content)
-            DB.session.add(comment)
-            DB.session.commit()
 
-            return comment
+        comment = DB.Comment(id=newUUID(), articleId=articleId, userId=userId, content=content)
+        DB.session.add(comment)
+        DB.session.commit()
 
-        raise Exception(f"Can't add duplicate likes to {articleId}")
+        return comment
 
     def DeleteComment(self, commentId: str):
         if (len(DB.session.query(DB.Comment).filter(DB.Comment.id == commentId).all()) >= 1):
@@ -141,6 +139,12 @@ class Application:
             return True
 
         raise Exception(f"Comment with id {commentId} doesn't exist")
+    
+    def GetLikes(self, articleId: str) -> list:
+        return DB.session.query(DB.Like).filter(DB.Like.articleId == articleId).all()
+    
+    def GetComments(self, articleId) -> list:
+        return DB.session.query(DB.Comment).filter(DB.Comment.articleId == articleId).all()
     
 # app = Application()
 

@@ -15,6 +15,11 @@ class UserModel(BaseModel):
 class UserIdModel(BaseModel):
     userid: str 
 
+class LikeModel(BaseModel):
+    articleid: str
+    userid: str
+
+
 @app.get("/{level}/{language}")
 async def GetArticles(level, language): 
     articles: list[dict] = None
@@ -42,7 +47,6 @@ async def Logout(userId: UserIdModel):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.args[0])
-    return 
 
 @app.post("/register")
 async def Register(model: UserModel):
@@ -56,5 +60,21 @@ async def Register(model: UserModel):
 async def GetUserByUsername(userId: UserIdModel):
     try:
         return [Service.GetUser(userId.userid)]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.args[0])
+
+@app.post("/like")
+async def Like(like: LikeModel):
+    try:
+        return Service.Like(like.articleid, like.userid)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e.args[0])
+
+@app.post("/unlike")
+async def Like(like: LikeModel):
+    try:
+        return Service.Unlike(like.articleid, like.userid)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.args[0])

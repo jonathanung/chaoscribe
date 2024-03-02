@@ -3,12 +3,15 @@ import json
 import random
 import uuid
 
+from sqlalchemy import delete
+
 def newUUID() -> str:
     return str(uuid.uuid4())
 
 class Application:
     def __init__(self):
-        self.ArticleCache: dict[list] = {}
+        self.ArticleCache: dict[int, dict] = {}
+        self.articleIdCache: dict[int, dict] = {}
         self.UserCache: dict[str, dict] = {}
         self.UsernameCache: dict[str, str] = {}
         self.DBSession = DB.Session()
@@ -20,6 +23,7 @@ class Application:
                 self.ArticleCache[article.level] = {"en": {}, "fr": {}, "es": {}}
 
             self.ArticleCache[article.level][article.language][article.id] = article.ToDict()
+            self.articleIdCache[article.id] = article.ToDict()  
 
         for user in self.DBSession.query(DB.User).all():
             self.UserCache[user.id] = { "user": user.ToDict(), "loggedIn": False }
@@ -38,6 +42,12 @@ class Application:
         except KeyError:
             raise Exception("No articles found")
             return []
+
+    def GetArticle(self, id: str):
+        try:
+            return self.articleIdCache[id]
+        except KeyError:
+            raise Exception(f"Article with id {id} not found")
 
     def CreateUser(self, userName: str, passwordHash: str):
         user = DB.User(id=newUUID(), 
@@ -76,12 +86,41 @@ class Application:
 
             return True
         except KeyError:
-            raise Exception(f"User {username} not found.")
+            raise Exception(f"User {userId} not found.")
             
             
     def GetUser(self, id: str):
         return self.UserCache[id]
- 
+    
+    def Like(self, articleId: str, userId: str):
+        if (not(articleId in self.articleIdCache.keys())):
+            raise Exception(f"Article with id {articleId} not found.")
+        
+        user = self.GetUser(userId)
+        if (len(DB.session.query(DB.Like).filter(DB.Like.articleId == articleId, DB.Like.userId == userId).all()) < 1):
+            like = DB.Like(id=newUUID(), articleId=articleId, userId=userId)
+            DB.session.add(like)
+            DB.session.commit()
+
+            return like
+
+        else:
+            raise Exception(f"Can't add duplicate likes to {articleId}")
+    
+    def Unlike(self, articleId: str, userId: str):
+        if (not(articleId in self.articleIdCache.keys())):
+            raise Exception(f"Article with id {articleId} not found.")
+        
+        user = self.GetUser(userId)
+
+        if (len(DB.session.query(DB.Like).filter(DB.Like.articleId == articleId, DB.Like.userId == userId).all()) >= 1):
+            DB.session.query(DB.Like).filter(DB.Like.articleId == articleId, DB.Like.userId == userId).delete()
+            DB.session.commit()
+        
+        else:
+            raise Exception(f"Like doesnt exist {articleId}")
+
+
     
 # app = Application()
 

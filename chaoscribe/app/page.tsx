@@ -93,8 +93,7 @@ export default function Home() {
                                     className="mt-2 px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-md focus:outline-none focus:ring"
                                     onClick={() => {
                                         console.log('Send comment');
-                                        // Add your logic to send the comment here
-                                        setCommentingArticleId(null); // Hide the input after sending
+                                        setCommentingArticleId(null);
                                     }}
                                     >
                                     Send

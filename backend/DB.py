@@ -44,6 +44,36 @@ class Article(Base):
             "content": self.content
         }
 
+class User(Base):
+    id = Column(String(100), primary_key=True)
+    username = Column(String(100))
+    level = Column(Integer())
+
+    def ToDict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "level": self.level
+        }
+
+class Likes(Base):
+    id = Column(String(100), primary_key=True)
+    userId = Column(String(100))
+    articleId = Column(String(100))
+ 
+class Comments(Base):
+    id = Column(String(100), primary_key=True)
+    userId = Column(String(100))
+    articleId = Column(String(100))
+    content = Column(String(1024))
+
+    def ToDict(self):
+        return {
+            "id": self.id,
+            "userId": self.userId,
+            "articleId": self.articleId,
+            "content": self.content
+        }           
 
 Base.metadata.create_all(engine)
 

@@ -10,7 +10,7 @@ con_string = f"postgresql://{os.getenv('user')}:{os.getenv('password')}@localhos
 
 engine = create_engine(con_string)
 Session = sessionmaker(bind=engine)
-
+ 
 connection = engine.connect()
 
 Base = declarative_base()
@@ -45,23 +45,31 @@ class Article(Base):
         }
 
 class User(Base):
+    __tablename__ = "users"
+    
     id = Column(String(100), primary_key=True)
     username = Column(String(100))
+    passwordHash = Column(String(100))
     level = Column(Integer())
 
     def ToDict(self):
         return {
             "id": self.id,
             "username": self.username,
+            "passwordHash": self.passwordHash,
             "level": self.level
         }
 
-class Likes(Base):
+class Like(Base):
+    __tablename__ = "likes"
+    
     id = Column(String(100), primary_key=True)
     userId = Column(String(100))
     articleId = Column(String(100))
  
-class Comments(Base):
+class Comment(Base):
+    __tablename__ = "comments"
+    
     id = Column(String(100), primary_key=True)
     userId = Column(String(100))
     articleId = Column(String(100))

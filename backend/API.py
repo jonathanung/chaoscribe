@@ -30,6 +30,10 @@ class CommentIdModel(BaseModel):
 class ArticleIdModel(BaseModel):
     articleid: str
 
+@app.get("/")
+async def GetRandomArticles():  
+    return Service.GetRandomArticles()
+
 @app.get("/{level}/{language}")
 async def GetArticles(level, language): 
     articles: list[dict] = None

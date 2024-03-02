@@ -2,7 +2,7 @@ import DB
 import json
 import random
 import uuid
-
+import random
 from sqlalchemy import delete
 
 def newUUID() -> str:
@@ -28,20 +28,35 @@ class Application:
         for user in self.DBSession.query(DB.User).all():
             self.UserCache[user.id] = { "user": user.ToDict(), "loggedIn": False }
             self.UsernameCache[user.username] = user.id 
+    
+    def GetRandomArticles(self, level: int = 3, language: str = "en"):
+        articles: list[dict] = [] 
+        shuffledMap: dict = {}
+    
+        try:
+            for x in range(level + 1):
+                for key in self.ArticleCache[x][language].keys():
+                    articles.append(self.ArticleCache[x][language][key])
+            n = len(articles)
+            for i in range(n - 1, 0, -1):
+                j = random.randint(0, i)  # Choose a random index from 0 to i
+                articles[i], articles[j] = articles[j], articles[i]  # Swap elements at i and j
+            return articles
+
+        except KeyError:
+            raise Exception("No articles found")
 
     def GetArticles(self, level: int = 3, language: str = "en", new: bool = True):
         articles: list[dict] = [] 
 
         try:
-            for x in range(level + 1):
-                for key in self.ArticleCache[x][language].keys():
-                    articles.append(self.ArticleCache[x][language][key])
+            for key in self.ArticleCache[level][language].keys():
+                articles.append(self.ArticleCache[level][language][key])
             
             return articles
 
         except KeyError:
             raise Exception("No articles found")
-            return []
 
     def GetArticle(self, id: str):
         try:

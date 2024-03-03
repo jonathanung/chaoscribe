@@ -1,19 +1,23 @@
-# News AI Generator - ChaosHacks2024
+# Chaoscribe - ChaosHacks2024
 
-Welcome to the News AI Generator, a project developed for ChaosHacks2024. This project leverages the power of AI to generate news articles on demand. It's built using Next.js and Tailwind CSS for the frontend, with GPT-4 and FlowBite being integral parts of the technology stack.
+Chaoscribe is a project developed for ChaosHacks2024. This project leverages the power of AI to classify news articles on demand. It's built using Next.js, Tailwind CSS, and FlowBite for the frontend, with FastAPI and Postgres for the backend, GPT-4 for AI capabilities, and NewsAPI for all of the data.
 
 ## Features
 
-- AI-powered news article generation
-- Responsive design using Tailwind CSS
-- Easy-to-use interface built with Next.js and FlowBite
+- AI-optimized news article classification using GPT-4 API
+- Responsive design using Tailwind CSS for an optimal viewing experience on various devices
+- Easy-to-use interface built with Next.js and FlowBite for smooth navigation and interaction
+- Fast and efficient backend powered by FastAPI and Postgres for handling requests and data storage
+- Integration with NewsAPI for accessing a wide range of news articles from different sources
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
-- Node.js
-- npm (Node Package Manager)
+- Node.js (version 12 or higher)
+- npm (Node Package Manager, version 6 or higher)
+- Python 3.7+ (for FastAPI)
+- PostgreSQL (for the database)
 
 ## Installation
 
@@ -51,4 +55,12 @@ To set up the project locally, follow these steps:
 
 - **AI:**
   - [GPT-4](https://openai.com/gpt-4) - The latest generation of the Generative Pre-trained Transformer by OpenAI.
+
+- **Backend:**
+  - [FastAPI](https://fastapi.tiangolo.com/) - A modern, fast (high-performance) web framework for building APIs with Python 3.7+.
+  - [Postgres](https://www.postgresql.org/) - An open source object-relational database system.
+
+- **Data Source:**
+  - [NewsAPI](https://newsapi.org/) - A simple HTTP REST API for searching and retrieving live articles from all over the web.
+
 

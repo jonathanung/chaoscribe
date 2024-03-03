@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from Application import Application
 
@@ -7,6 +8,14 @@ app = FastAPI()
 Service = Application()
 
 Service.LoadCache()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class UserModel(BaseModel):
     username: str
@@ -32,7 +41,7 @@ class ArticleIdModel(BaseModel):
 
 @app.get("/")
 async def GetRandomArticles():  
-    return Service.GetRandomArticles()
+    return Service.GetRandomArticles()[:20]
 
 @app.get("/{level}/{language}")
 async def GetArticles(level, language): 
@@ -44,7 +53,7 @@ async def GetArticles(level, language):
     except Exception as e:
         raise HTTPException(status_code=500, detail=e.args[0])
     
-    return articles
+    return articles[:20]
 
 @app.post("/login")
 async def Login(model: UserModel):
@@ -111,7 +120,7 @@ async def Unlike(commentId: CommentIdModel):
         raise HTTPException(status_code=500, detail=e.args[0])
 
 
-@app.get("/comments")
+@app.post("/comments")
 async def GetComments(articleId: ArticleIdModel):
     try:
         return Service.GetComments(articleId.articleid)
@@ -120,7 +129,7 @@ async def GetComments(articleId: ArticleIdModel):
         raise HTTPException(status_code=500, detail=e.args[0])
 
 
-@app.get("/likes")
+@app.post("/likes")
 async def GetLikes(articleId: ArticleIdModel):
     try:
         return Service.GetLikes(articleId.articleid)

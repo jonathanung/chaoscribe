@@ -76,7 +76,7 @@ export default function Navbar({ showFullNav, isLoggedIn, chaosLevel, setChaosLe
                         
                         <label htmlFor="default-range" className="block mb-2 font-medium text-gray-900 dark:text-white h-full">Chaos Level</label>
                         <div className="relative px-2 flex items-center h-full">
-                            <input id="default-range" type="range" value={chaosLevel} onChange={handleSliderChange} onMouseEnter={showTooltip} onMouseLeave={hideTooltip} min="0" max="6" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
+                            <input id="default-range" type="range" value={chaosLevel} onChange={handleSliderChange} onMouseEnter={showTooltip} onMouseLeave={hideTooltip} min="0" max="5" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
                             {isTooltipVisible && (
                                 <div className="absolute left-0 top-[calc(100%+5px)] w-full text-center">
                                     <span className="bg-gray-700 text-white text-xs rounded py-1 px-2">{chaosLevel}</span>

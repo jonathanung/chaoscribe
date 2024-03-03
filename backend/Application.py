@@ -53,6 +53,10 @@ class Application:
             for key in self.ArticleCache[level][language].keys():
                 articles.append(self.ArticleCache[level][language][key])
             
+            n = len(articles)
+            for i in range(n - 1, 0, -1):
+                j = random.randint(0, i)  # Choose a random index from 0 to i
+                articles[i], articles[j] = articles[j], articles[i]  # Swap elements at i and j
             return articles
 
         except KeyError:

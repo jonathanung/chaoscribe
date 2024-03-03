@@ -1,9 +1,9 @@
 "use client";
 import Navbar from "../components/navbar";
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import { User, UserContext } from "../contexts/UserContext";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 
 export default function Login() {
@@ -40,11 +40,12 @@ export default function Login() {
     const [user, setUser] = useState({ username: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
 
+
     const User = useContext(UserContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser({ ...user, [name]: value });
+        setUser(user => { return { ...user, [name]: value } })
     };
 
     const togglePasswordVisibility = () => {
@@ -56,7 +57,7 @@ export default function Login() {
         try {
             const salt = bcrypt.genSaltSync(10);
             const hpass = bcrypt.hashSync(user.password, salt);
-            const response = await fetch(`http://${process.env.APIURL}/api/login`, {
+            const response = await fetch(`http://${process.env.APIURL}/login`, {
                 method: "post",
                 mode: "cors",
                 headers: {"Content-Type": "application/json"}, 
@@ -64,7 +65,9 @@ export default function Login() {
                     "username": user.username,
                     "passwordHash": hpass
                 })
-            }); //API INTEGRATION TODO
+            }); 
+        
+            console.log(await response.json());
         } catch (error) {
             console.error('Invalid', error);
         }
@@ -77,17 +80,19 @@ export default function Login() {
             <Navbar showFullNav={false} isLoggedIn={false} chaosLevel={0} setChaosLevel={()=>{}} chaosMode={false} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 <h4>Login</h4>
-                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-slate-950">
+
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-slate-950 text-black">
                     <form className="space-y-6 border p-4 rounded-md" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email">Email:</label>
                             <input
-                                type="email"
+                                type="text"
                                 id="email"
-                                name="email"
+                                name="username"
                                 value={user.username}
+
                                 onChange={handleChange}
-                                className="mt-1 block w-full border p-2 rounded-md"
+                                className="mt-1 block w-full border p-2 rounded-md text-black"
                             />
                         </div>
                         <div>
@@ -99,7 +104,7 @@ export default function Login() {
                                     name="password"
                                     value={user.password}
                                     onChange={handleChange}
-                                    className="mt-1 block w-full border p-2 rounded-md"
+                                    className="mt-1 block w-full border p-2 rounded-md text-black"
                                 />
                                 <button
                                     type="button"

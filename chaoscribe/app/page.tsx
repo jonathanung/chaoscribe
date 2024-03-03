@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Navbar from "./components/navbar";
 import LoginModal from './components/loginModal';
 import axios from 'axios';
@@ -7,6 +7,9 @@ import Link from 'next/link';
 import {Article} from './interfaces/article';
 import Comment from './interfaces/comment';
 import { describe } from 'node:test';
+import { UserContext } from './contexts/UserContext';
+import { LikesContext } from './contexts/LikesContext';
+import { ArticleContext } from './contexts/ArticleContext';
 
 
 export default function Home() {
@@ -41,7 +44,12 @@ export default function Home() {
         zIndex: 1000
     };
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const User = useContext(UserContext);
+    const Likes = useContext(LikesContext);
+
+    const Articles = useContext(ArticleContext);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(User.User.LoggedIn);
     const [chaosLevel, setChaosLevel] = useState(2);
     const [articles, setArticles] = useState<Article[] | any[]>([]);
     const [chaosMode, setChaosMode] = useState(true);
@@ -50,6 +58,7 @@ export default function Home() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [currentComment, setCurrentComment] = useState<string>("");
     const [search, setSearch] = useState<string>("");
+
 
     async function copyToClip(id: string) {
         // if (isLoggedIn) {
@@ -64,21 +73,14 @@ export default function Home() {
         // rishit didn't like the anti-consumer twitter experience :(
     }
 
-    const incrementLikes = (articleId: string) => {
+    const incrementLikes = async (articleId: string) => {
         if (isLoggedIn) {
-            // axios.post(`http://localhost:8000/api/articles/${articleId}/like`)
-            //     .then((response) => {
-            //         console.log(response.data);
-            //         setArticles(articles.map((article: Article) => {
-            //             if (article.id === articleId) {
-            //                 return { ...article, likes: response.data.likes }
-            //             }
-            //             return article;
-            //         }));
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
+            Likes.addLiked(await (await fetch("http://127.0.0.1:8000/likes", { 
+                            method: "POST", 
+                            mode: "cors", 
+                            headers: {"Content-Type" : "application/json"}, 
+                            body: JSON.stringify({ "articleid": articleId, "userid": User.User.UserId })})).json());
+            
         } else {
             setShowLoginModal(true);
         }
@@ -127,8 +129,11 @@ export default function Home() {
 
     useEffect(() =>  {
         const fetchArticles = async () => {
+
+            let articlesRaw: Article[] = [];
             
-            let articlesRaw = ((await (await fetch('http://127.0.0.1:8000/')).json()) as any[]).map(
+            for (let x = 0; x < 6; x++)
+                 (((await (await fetch(`http://127.0.0.1:8000/${x}/en`)).json()) as any[]).map(
                     (obj: any): Article=> {
                         return {
                             id: obj.id,
@@ -144,20 +149,25 @@ export default function Home() {
                             likes: [],//await (await fetch("http://127.0.0.1:8000/likes", { method: "POST", body: JSON.stringify({ "articleid": obj.id })})).json(),
                             comments:[]// await (await fetch("http://127.0.0.1:8000/comments", { method:"POST", body: JSON.stringify({ "articleid": obj.id })})).json()
                         };
-                    });
+                    }) as Article[]).forEach(val => articlesRaw.push(val));
+
                
-            for (let x = 0; x < articlesRaw.length; x++)
-                    articlesRaw[x] = {...articlesRaw[x], 
-                                        likes: await (await fetch("http://127.0.0.1:8000/likes", { method: "POST", mode: "cors", headers: {"Content-Type" : "application/json"}, body: JSON.stringify({ "articleid": articlesRaw[x].id })})).json(),
-                                        comments: await (await fetch("http://127.0.0.1:8000/comments", { method: "POST", mode: "cors", headers: {"Content-Type" : "application/json"}, body: JSON.stringify({ "articleid": articlesRaw[x].id })})).json()
-                                    };
+            // for (let x = 0; x < articlesRaw.length; x++){
+            //         articlesRaw[x] = {...articlesRaw[x], 
+            //                             likes: await (await fetch("http://127.0.0.1:8000/likes", { method: "POST", mode: "cors", headers: {"Content-Type" : "application/json"}, body: JSON.stringify({ "articleid": articlesRaw[x].id })})).json(),
+            //                             comments: await (await fetch("http://127.0.0.1:8000/comments", { method: "POST", mode: "cors", headers: {"Content-Type" : "application/json"}, body: JSON.stringify({ "articleid": articlesRaw[x].id })})).json()
+            //                         };
+            //                     }
 
             setArticles(articlesRaw);
-            console.log(articles);
+            console.log(articlesRaw);
+            // articlesRaw.forEach((val) => (Articles.Articles.get(val.chaosLevel) as Article[]).push());
         }; 
 
-        fetchArticles();
-    }, []);
+        if (articles.length < 1)
+            fetchArticles();
+
+    }, [articles]);
 
     return (
         <main className="">
@@ -165,7 +175,7 @@ export default function Home() {
             <Navbar showFullNav={true} isLoggedIn={isLoggedIn} chaosLevel={chaosLevel} setChaosLevel={setChaosLevel} chaosMode={chaosMode} />
             <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
                 {articles.map((article: Article, i: number) => {
-                    if (article.chaosLevel <= chaosLevel && (article.title.toLowerCase().includes(search.toLowerCase()) || 
+                    if (article.chaosLevel == chaosLevel && (article.title.toLowerCase().includes(search.toLowerCase()) || 
                         article.author.toLowerCase().includes(search.toLowerCase()) || article.description.toLowerCase().includes(search.toLowerCase()) || 
                         article.content.toLowerCase().includes(search.toLowerCase()) || Number(article.chaosLevel.toString()) === Number(search))) {
                         return (

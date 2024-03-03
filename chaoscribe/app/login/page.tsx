@@ -1,7 +1,9 @@
 "use client";
 import Navbar from "../components/navbar";
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { User, UserContext } from "../contexts/UserContext";
+
 
 export default function Login() {
     const styles : React.CSSProperties = {
@@ -34,8 +36,10 @@ export default function Login() {
         backgroundRepeat: 'no-repeat',
         zIndex: 1000
     };
-    const [user, setUser] = useState({ email: '', password: '' });
+    const [user, setUser] = useState({ username: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
+
+    const User = useContext(UserContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -49,12 +53,20 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/login', user); //API INTEGRATION TODO
-            console.log('Success', response.data);
+            const response = await fetch(`http://${process.env.APIURL}/api/login`, {
+                method: "post",
+                mode: "cors",
+                headers: {"Content-Type": "application/json"}, 
+                body: JSON.stringify({
+                    "username": user.username,
+                    "passwordHash": user.password
+                })
+            }); //API INTEGRATION TODO
         } catch (error) {
             console.error('Invalid', error);
         }
     };
+
 
     return (
         <main>
@@ -70,7 +82,7 @@ export default function Login() {
                                 type="email"
                                 id="email"
                                 name="email"
-                                value={user.email}
+                                value={user.username}
                                 onChange={handleChange}
                                 className="mt-1 block w-full border p-2 rounded-md"
                             />

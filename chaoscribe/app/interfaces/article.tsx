@@ -1,6 +1,6 @@
 import Comment from './comment';
 
-interface Article {
+export interface Article {
     id: string,
     source: string
     author: string;
@@ -14,5 +14,3 @@ interface Article {
     likes: Array<string>
     comments: Array<Comment>
 };
-
-export default Article;

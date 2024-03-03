@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { User, UserContext } from "../contexts/UserContext";
+import bcrypt from 'bcrypt';
 
 
 export default function Login() {
@@ -53,13 +54,15 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            const salt = bcrypt.genSaltSync(10);
+            const hpass = bcrypt.hashSync(user.password, salt);
             const response = await fetch(`http://${process.env.APIURL}/api/login`, {
                 method: "post",
                 mode: "cors",
                 headers: {"Content-Type": "application/json"}, 
                 body: JSON.stringify({
                     "username": user.username,
-                    "passwordHash": user.password
+                    "passwordHash": hpass
                 })
             }); //API INTEGRATION TODO
         } catch (error) {
